@@ -4,11 +4,12 @@ import { useEffect, useState } from "react"
 import { Patient } from "@/lib/db/schema"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { LayoutGrid, Table2, Plus } from "lucide-react"
 import PatientTable from "@/components/PatientTable"
 import PatientBoard from "@/components/PatientBoard"
 import PatientDrawer from "@/components/PatientDrawer"
+
 
 const STATUSES = ["All", "Inquiry", "Onboarding", "Active", "Churned"]
 
@@ -27,6 +28,11 @@ export default function Home() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // Implementing sorting function here: state <> (default)
+  const [sortField, setSortField] = useState<"firstName" | "lastName" | "dateOfBirth" | "status" | "address">("firstName")
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc")
+  const [confirmDelete, setConfirmDelete] = useState<number | null> (null) // if number(id) = delete, if null = no delete.
 
   const fetchPatients = async () => {
     setLoading(true)
@@ -48,6 +54,23 @@ export default function Home() {
     return matchesSearch && matchesStatus
   })
 
+  const sorted = [...filtered].sort((a, b) => {
+    const aVal = a[sortField] ?? ""
+    const bVal = b[sortField] ?? ""
+    if (aVal < bVal) return sortDirection === "asc" ? -1 : 1
+    if (aVal > bVal) return sortDirection === "asc" ? 1 : -1
+    return 0
+  })
+
+  const handleSort = (field: typeof sortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+    } else {
+      setSortField(field)
+      setSortDirection("asc")
+    }
+  }
+
   const getCount = (status: string) =>
     status === "All"
       ? patients.length
@@ -63,9 +86,16 @@ export default function Home() {
     setDrawerOpen(true)
   }
 
-  const handleDelete = async (id: number) => {
-    await fetch(`/api/patients/${id}`, { method: "DELETE" })
+  const handleDelete = async () => {
+    if (confirmDelete === null) return // No delete action if not confirmed
+    await fetch(`/api/patients/${confirmDelete}`, { method: "DELETE" })
+    setConfirmDelete(null) // Reset
     fetchPatients()
+  }
+
+  // Set the delete button and remember the id of the patient to be deleted.
+  const handleDeleteConfirm = (id: number) => {
+    setConfirmDelete(id); // Set as id of deleted.
   }
 
   const handleStatusChange = async (id: number, status: string) => {
@@ -151,17 +181,20 @@ export default function Home() {
           <div className="text-center py-20 text-gray-400">Loading patients...</div>
         ) : view === "table" ? (
           <PatientTable
-            patients={filtered}
+            patients={sorted}
             statusColors={STATUS_COLORS}
             onEdit={handleEdit}
-            onDelete={handleDelete}
+            onDelete={handleDeleteConfirm}
+            onSort={handleSort}
+            sortField={sortField}
+            sortDirection={sortDirection}
           />
         ) : (
           <PatientBoard
             patients={filtered}
             statusColors={STATUS_COLORS}
             onEdit={handleEdit}
-            onDelete={handleDelete}
+            onDelete={handleDeleteConfirm}
             onStatusChange={handleStatusChange}
           />
         )}
@@ -173,6 +206,30 @@ export default function Home() {
           onSave={handleSave}
           patient={editingPatient}
         />
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog open={confirmDelete !== null} onOpenChange={() => setConfirmDelete(null)}>
+          <DialogContent> 
+          
+            <DialogHeader>
+              <DialogTitle>
+                Confirm Deletion
+              </DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this patient? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <div>
+              <Button variant="outline" onClick={() => setConfirmDelete(null)} className="mt-4 mr-2">
+                Cancel
+              </Button>
+              <Button variant="destructive" onClick={handleDelete} className="mt-4">
+                Delete
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
       </div>
     </main>
   )

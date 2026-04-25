@@ -10,9 +10,12 @@ interface Props {
   statusColors: Record<string, string>
   onEdit: (patient: Patient) => void
   onDelete: (id: number) => void
+  onSort: (field: "firstName" | "lastName" | "dateOfBirth" | "status" | "address") => void
+  sortField: string
+  sortDirection: "asc" | "desc"
 }
 
-export default function PatientTable({ patients, statusColors, onEdit, onDelete }: Props) {
+export default function PatientTable({ patients, statusColors, onEdit, onDelete, onSort, sortField, sortDirection }: Props) {
   if (patients.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-20 text-center">
@@ -25,12 +28,25 @@ export default function PatientTable({ patients, statusColors, onEdit, onDelete 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       <table className="w-full">
-        <thead>
+          <thead>
           <tr className="border-b border-gray-100 bg-gray-50">
-            <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Name</th>
-            <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Date of Birth</th>
-            <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
-            <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Address</th>
+            {[
+            { label: "Name", field: "firstName" },
+            { label: "Date of Birth", field: "dateOfBirth" },
+            { label: "Status", field: "status" },
+            { label: "Address", field: "address" },
+          ].map(({ label, field }) => (
+            <th
+              key={field}
+              onClick={() => onSort(field as any)}
+              className="text-left px-6 py-4 text-sm font-semibold text-gray-600 cursor-pointer hover:text-blue-600 select-none"
+            >
+              {label}
+              {sortField === field && (
+                <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>
+              )}
+            </th>
+          ))}
             <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Actions</th>
           </tr>
         </thead>
