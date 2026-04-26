@@ -94,11 +94,14 @@ export default function PatientDrawer({ open, onClose, onSave, patient }: Props)
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[480px]">
+      {/* <DialogContent className="sm:max-w-[480px]"> */}
+
+        <DialogContent className="sm:max-w-[480px]" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>
             {patient ? "Edit Patient" : "Add New Patient"}
           </DialogTitle>
+          {/* <DialogContent aria-describedby={undefined}></DialogContent> */}
         </DialogHeader>
 
         <div className="flex flex-col gap-4 mt-2">

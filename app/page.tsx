@@ -9,7 +9,7 @@ import { LayoutGrid, Table2, Plus } from "lucide-react"
 import PatientTable from "@/components/PatientTable"
 import PatientBoard from "@/components/PatientBoard"
 import PatientDrawer from "@/components/PatientDrawer"
-
+import PatientHeader from "@/components/PatientHeader"
 
 const STATUSES = ["All", "Inquiry", "Onboarding", "Active", "Churned"]
 
@@ -128,6 +128,7 @@ export default function Home() {
           </Button>
         </div>
 
+        <PatientHeader patients={patients} />
         {/* Status filter tabs */}
         <div className="flex gap-2 mb-6 flex-wrap">
           {STATUSES.map((status) => (
@@ -180,6 +181,8 @@ export default function Home() {
         {loading ? (
           <div className="text-center py-20 text-gray-400">Loading patients...</div>
         ) : view === "table" ? (
+
+
           <PatientTable
             patients={sorted}
             statusColors={STATUS_COLORS}
