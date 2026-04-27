@@ -25,7 +25,7 @@ export default function PatientTable({ patients, statusColors, onEdit, onDelete,
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden  shadow-sm">
       <table className="w-full">
           <thead>
           <tr className="border-b border-gray-100 bg-gray-50 ">
