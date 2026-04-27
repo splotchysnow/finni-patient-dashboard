@@ -17,7 +17,7 @@ interface Props {
 export default function PatientTable({ patients, statusColors, onEdit, onDelete, onSort, sortField, sortDirection }: Props) {
   if (patients.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-20 text-center">
+      <div className="bg-white rounded-xl border border-gray-200 p-20 text-center select-none">
         <p className="text-gray-400 text-lg">No patients found</p>
         <p className="text-gray-300 text-sm mt-1">Add a patient or adjust your filters</p>
       </div>
@@ -25,10 +25,10 @@ export default function PatientTable({ patients, statusColors, onEdit, onDelete,
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden ">
       <table className="w-full">
           <thead>
-          <tr className="border-b border-gray-100 bg-gray-50">
+          <tr className="border-b border-gray-100 bg-gray-50 ">
             {[
             { label: "Name", field: "firstName" },
             { label: "Date of Birth", field: "dateOfBirth" },

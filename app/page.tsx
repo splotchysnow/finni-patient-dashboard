@@ -139,8 +139,8 @@ export default function Home() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Patient Dashboard</h1>
-            <p className="text-gray-500 mt-1">Manage and track your patients</p>
+            <h1 className="text-3xl font-bold text-gray-900 select-none">Patient Dashboard</h1>
+            <p className="text-gray-500 mt-1 select-none">Manage and track your patients</p>
           </div>
           <Button onClick={handleAdd} className="flex items-center gap-2">
             <Plus size={16} />
@@ -150,7 +150,7 @@ export default function Home() {
 
         <PatientHeader patients={patients} />
         {/* Status filter tabs */}
-        <div className="flex gap-2 mb-6 flex-wrap">
+        <div className="flex gap-2 mb-6 flex-wrap select-none">
           {STATUSES.map((status) => (
             <button
               key={status}
@@ -172,7 +172,7 @@ export default function Home() {
         </div>
 
         {/* Search and view toggle */}
-        <div className="flex items-center justify-between mb-4 gap-4">
+        <div className="flex items-center justify-between mb-4 gap-4 select-none ">
           <Input
             placeholder="Search patients by name..."
             value={search}
@@ -199,10 +199,10 @@ export default function Home() {
 
         {/* Views */}
         {loading ? (
-          <div className="text-center py-20 text-gray-400">Loading patients...</div>
+          <div className="text-center py-20 text-gray-400 select-none">Loading patients...</div>
         ) : view === "table" ? (
 
-
+          
           <PatientTable
             patients={sorted}
             statusColors={STATUS_COLORS}
@@ -236,10 +236,10 @@ export default function Home() {
           <DialogContent> 
           
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="select-none bold text-lg text-gray-900">
                 Confirm Deletion
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="select-none">
                 Are you sure you want to delete this patient? This action cannot be undone.
               </DialogDescription>
             </DialogHeader>

@@ -29,7 +29,7 @@ export default function PatientHeader({ patients }: Props) {
     ]
 
     return (
-        <div className="grid grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-5 gap-4 mb-6 select-none">
             {stats.map((stat) => (
                 <div
                     key={stat.label}
