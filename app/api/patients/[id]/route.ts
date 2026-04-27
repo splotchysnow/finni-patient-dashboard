@@ -1,8 +1,7 @@
 import { db } from "@/lib/db/db";
 import { patients} from "@/lib/db/schema";
-import { eq } from "drizzle-orm"; // TODO: What is this
+import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
-
 
 type Props = {
     params: Promise<{ id: string }>

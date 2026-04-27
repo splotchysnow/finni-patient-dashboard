@@ -1,6 +1,5 @@
 import { db } from "@/lib/db/db";
 import { patients, NewPatient} from "@/lib/db/schema";
-import { eq } from "drizzle-orm"; // TODO: What is this
 import { NextRequest, NextResponse } from "next/server";
 
 // GET all patients
