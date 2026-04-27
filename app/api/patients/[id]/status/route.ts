@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server"
 type Props = {
   params: Promise<{ id: string }>
 }
+
 // Using Patch because only partially the data is replaced / changed.
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
