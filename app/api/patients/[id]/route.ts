@@ -39,6 +39,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
     }
 }
 
+
 // DELETE /api/patients/:id
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
