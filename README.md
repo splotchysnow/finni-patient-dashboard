@@ -1,4 +1,4 @@
-# Finni Patient Dashboard
+# Patient Dashboard
 
 A patient management dashboard built for Finni Health's take-home project
 
